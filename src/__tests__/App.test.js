@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom';
 
 import App from "../App";
@@ -67,25 +67,67 @@ test("displays the correct links", () => {
 // Newsletter Form - Initial State
 test("the form includes text inputs for name and email address", () => {
   // your test code here
+  render(<App />);
+  expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
 });
 
 test("the form includes three checkboxes to select areas of interest", () => {
   // your test code here
+  render(<App />);
+  expect(screen.getByLabelText(/technology/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/sports/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/music/i)).toBeInTheDocument();
 });
 
 test("the checkboxes are initially unchecked", () => {
   // your test code here
+  render(<App />);
+  expect(screen.getByLabelText(/technology/i)).not.toBeChecked();
+  expect(screen.getByLabelText(/sports/i)).not.toBeChecked();
+  expect(screen.getByLabelText(/music/i)).not.toBeChecked();
 });
 
 // Newsletter Form - Adding Responses
 test("the page shows information the user types into the name and email address form fields", () => {
   // your test code here
+  render(<App />);
+  const nameInput = screen.getByLabelText(/name/i);
+  const emailInput = screen.getByLabelText(/email/i);
+
+  fireEvent.change(nameInput, { target: { value: "John Doe" } });
+  fireEvent.change(emailInput, { target: { value: "john@example.com" } });
+
+  expect(nameInput).toHaveValue("John Doe");
+  expect(emailInput).toHaveValue("john@example.com");
 });
 
 test("checked status of checkboxes changes when user clicks them", () => {
   // your test code here
+  render(<App />);
+  const techCheckbox = screen.getByLabelText(/technology/i);
+  const sportsCheckbox = screen.getByLabelText(/sports/i);
+  const musicCheckbox = screen.getByLabelText(/music/i);
+
+  fireEvent.click(techCheckbox);
+  fireEvent.click(sportsCheckbox);
+
+  expect(techCheckbox).toBeChecked();
+  expect(sportsCheckbox).toBeChecked();
+  expect(musicCheckbox).not.toBeChecked();
 });
 
 test("a message is displayed when the user clicks the Submit button", () => {
   // your test code here
+  render(<App />);
+  const techCheckbox = screen.getByLabelText(/technology/i);
+  const sportsCheckbox = screen.getByLabelText(/sports/i);
+  const musicCheckbox = screen.getByLabelText(/music/i);
+
+  fireEvent.click(techCheckbox);
+  fireEvent.click(sportsCheckbox);
+
+  expect(techCheckbox).toBeChecked();
+  expect(sportsCheckbox).toBeChecked();
+  expect(musicCheckbox).not.toBeChecked();
 });
